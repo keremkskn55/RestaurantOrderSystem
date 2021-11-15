@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_order_system/screens/create_account_view.dart';
 
 class SignInViewCreateAccountButton extends StatelessWidget {
   const SignInViewCreateAccountButton({Key? key}) : super(key: key);
@@ -9,6 +10,8 @@ class SignInViewCreateAccountButton extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         print('Create Account button...');
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CreateAccountView()));
       },
       child: Container(
         width: (size.width - 32) / 2,
