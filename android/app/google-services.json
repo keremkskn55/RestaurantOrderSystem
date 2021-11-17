@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "988331094278",
+    "project_id": "restaurant-order-system-a1eca",
+    "storage_bucket": "restaurant-order-system-a1eca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988331094278:android:177668d37955e44d9dee87",
+        "android_client_info": {
+          "package_name": "com.example.restaurant_order_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "988331094278-2nn6d6arlpnre7ovc43h1gdprgj03i86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.restaurant_order_system",
+            "certificate_hash": "2f6fe5f34f88295ef817a2e7e90e2a75e530c693"
+          }
+        },
+        {
+          "client_id": "988331094278-0ag9qhc2fojhlnv6rv856eciqb1us4qf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmkU777KOLijytvAedyshKtYfouhxWE6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "988331094278-0ag9qhc2fojhlnv6rv856eciqb1us4qf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

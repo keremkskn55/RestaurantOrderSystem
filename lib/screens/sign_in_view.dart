@@ -12,8 +12,10 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-  GlobalKey emailPasswordKey = GlobalKey<FormState>();
+  /// Global Key
+  GlobalKey<FormState> emailPasswordKey = GlobalKey<FormState>();
 
+  /// Icons
   Icon emailPrefixIcon = const Icon(
     Icons.email,
     color: Colors.black,
@@ -22,6 +24,10 @@ class _SignInViewState extends State<SignInView> {
     Icons.lock,
     color: Colors.black,
   );
+
+  /// Text Editing Controller
+  TextEditingController emailCtr = TextEditingController();
+  TextEditingController passwordCtr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +68,7 @@ class _SignInViewState extends State<SignInView> {
                 child: TextFieldComponent(
                   sentPrefixIcon: emailPrefixIcon,
                   sentHintText: 'E-mail',
+                  ctr: emailCtr,
                 ),
               ),
 
@@ -74,15 +81,20 @@ class _SignInViewState extends State<SignInView> {
                 child: TextFieldComponent(
                   sentPrefixIcon: passwordPrefixIcon,
                   sentHintText: 'Password',
+                  ctr: passwordCtr,
                 ),
               ),
 
               ///Sign In Button
-              const Align(
+              Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: EdgeInsets.only(top: 8.0, right: 16),
-                  child: SignInViewSignInButton(),
+                  child: SignInViewSignInButton(
+                    emailStr: emailCtr.text,
+                    passwordStr: passwordCtr.text,
+                    signInKey: emailPasswordKey,
+                  ),
                 ),
               ),
 

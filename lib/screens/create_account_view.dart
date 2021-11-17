@@ -11,8 +11,10 @@ class CreateAccountView extends StatefulWidget {
 }
 
 class _CreateAccountViewState extends State<CreateAccountView> {
-  GlobalKey createAccountKey = GlobalKey<FormState>();
+  /// Controller
+  GlobalKey<FormState> _createAccountKey = GlobalKey<FormState>();
 
+  /// Icons
   Icon emailPrefixIcon = const Icon(
     Icons.email,
     color: Colors.black,
@@ -21,6 +23,11 @@ class _CreateAccountViewState extends State<CreateAccountView> {
     Icons.lock,
     color: Colors.black,
   );
+
+  /// Text Editing Controller
+  TextEditingController emailCtr = TextEditingController();
+  TextEditingController passwordCtr = TextEditingController();
+  TextEditingController passwordAgainCtr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +64,7 @@ class _CreateAccountViewState extends State<CreateAccountView> {
           ),
         ),
         child: Form(
-          key: createAccountKey,
+          key: _createAccountKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -76,6 +83,7 @@ class _CreateAccountViewState extends State<CreateAccountView> {
                 child: TextFieldComponent(
                   sentPrefixIcon: emailPrefixIcon,
                   sentHintText: 'E-mail',
+                  ctr: emailCtr,
                 ),
               ),
 
@@ -88,6 +96,7 @@ class _CreateAccountViewState extends State<CreateAccountView> {
                 child: TextFieldComponent(
                   sentPrefixIcon: passwordPrefixIcon,
                   sentHintText: 'Password',
+                  ctr: passwordCtr,
                 ),
               ),
 
@@ -100,6 +109,7 @@ class _CreateAccountViewState extends State<CreateAccountView> {
                 child: TextFieldComponent(
                   sentPrefixIcon: passwordPrefixIcon,
                   sentHintText: 'Password Again',
+                  ctr: passwordAgainCtr,
                 ),
               ),
 
@@ -111,16 +121,42 @@ class _CreateAccountViewState extends State<CreateAccountView> {
                     top: 40,
                     right: 16,
                   ),
-                  child: CreateAccountViewContinueButton(),
+                  child: CreateAccountViewContinueButton(
+                    emailStr: emailCtr.text,
+                    passwordStr: passwordCtr.text,
+                    passwordAgainStr: passwordAgainCtr.text,
+                    createAccountKey: _createAccountKey,
+                    callbackCheckPassword: showErrorDialog,
+                  ),
                 ),
               ),
 
               /// Spacer
-              Spacer(flex: 3),
+              const Spacer(flex: 3),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> showErrorDialog(String title, String detail) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(detail),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

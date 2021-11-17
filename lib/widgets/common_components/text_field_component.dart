@@ -1,16 +1,34 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldComponent extends StatelessWidget {
   Icon? sentPrefixIcon;
   String? sentHintText;
+  final TextEditingController ctr;
 
-  TextFieldComponent({this.sentPrefixIcon, this.sentHintText});
-  final TextEditingController _ctr = TextEditingController();
+  TextFieldComponent(
+      {this.sentPrefixIcon, this.sentHintText, required this.ctr});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: _ctr,
+      controller: ctr,
+      validator: (_val) {
+        if (sentHintText == 'E-mail') {
+          if (!EmailValidator.validate(_val!)) {
+            return 'Please enter valid email address';
+          } else {
+            return null;
+          }
+        }
+        if (sentHintText == 'Password' || sentHintText == 'Password Again') {
+          if (_val!.length < 6) {
+            return 'Please enter password more 6 character';
+          } else {
+            return null;
+          }
+        }
+      },
       decoration: InputDecoration(
         prefixIcon: sentPrefixIcon,
         hintText: sentHintText,
