@@ -31,6 +31,7 @@ class _MyAppState extends State<MyApp> {
           return Provider<Auth>(
             create: (_) => Auth(),
             child: const MaterialApp(
+              debugShowCheckedModeBanner: false,
               home: OnBoard(),
             ),
           );

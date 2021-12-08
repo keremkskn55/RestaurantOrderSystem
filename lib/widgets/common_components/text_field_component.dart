@@ -28,6 +28,11 @@ class TextFieldComponent extends StatelessWidget {
             return null;
           }
         }
+        if (sentHintText == 'Restaurant Name') {
+          if (_val!.isEmpty) {
+            return 'Please enter a name';
+          }
+        }
       },
       decoration: InputDecoration(
         prefixIcon: sentPrefixIcon,

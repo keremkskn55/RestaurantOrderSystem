@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_order_system/screens/create_account_name_and_floor_number_view.dart';
 import 'package:restaurant_order_system/services/auth.dart';
 
 class CreateAccountViewContinueButton extends StatelessWidget {
@@ -25,24 +26,19 @@ class CreateAccountViewContinueButton extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         print('Continue Create Account Button was pressed...');
-        try {
-          if (createAccountKey.currentState!.validate()) {
-            if (passwordStr != passwordAgainStr) {
-              callbackCheckPassword('Error', 'Please enter same password.');
-            } else {
-              print('create account....');
-              final user = await Provider.of<Auth>(context, listen: false)
-                  .registerWithEmail(emailStr, passwordStr);
 
-              await Provider.of<Auth>(context, listen: false).signOut();
-            }
+        if (createAccountKey.currentState!.validate()) {
+          if (passwordStr != passwordAgainStr) {
+            callbackCheckPassword('Error', 'Please enter same password.');
+          } else {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CreateAccountNameAndFloorNumberView(
+                          email: emailStr,
+                          password: passwordStr,
+                        )));
           }
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'email-already-in-use') {
-            print('The account already exists for that email.');
-          }
-        } catch (e) {
-          print(e);
         }
       },
       child: Container(
