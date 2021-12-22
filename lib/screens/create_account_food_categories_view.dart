@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +120,9 @@ class _CreateAccountFoodCategoriesViewState
             GestureDetector(
               onTap: () async {
                 print('Restaurant Created and added to firebase');
+
+                List<String> foodCategory =
+                    categoryNameList.map((data) => jsonEncode(data)).toList();
                 await Provider.of<CreateAccountFoodCategoriesModeView>(context,
                         listen: false)
                     .addNewRestaurant(
@@ -126,7 +131,7 @@ class _CreateAccountFoodCategoriesViewState
                         restaurantName: widget.restaurantName,
                         places: widget.places,
                         placesList: widget.placesList,
-                        categoryNameList: categoryNameList);
+                        categoryNameList: foodCategory);
                 try {
                   await Auth().registerWithEmail(widget.email, widget.password);
                 } on FirebaseAuthException catch (e) {

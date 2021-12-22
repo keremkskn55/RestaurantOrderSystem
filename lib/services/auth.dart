@@ -13,13 +13,19 @@ class Auth {
   Future<User?> registerWithEmail(String email, String password) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
+    print('email:   :${userCredential.user!.email}');
     return userCredential.user;
+  }
+
+  String? currentEmailAddress() {
+    return _auth.currentUser!.email;
   }
 
   /// Sign In with Email
   Future<User?> signInWithEmail(String email, String password) async {
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
+
     return userCredential.user;
   }
 

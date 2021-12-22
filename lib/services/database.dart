@@ -13,4 +13,10 @@ class Database {
         .doc(Restaurant.fromMap(restaurantAsMap).email)
         .set(restaurantAsMap);
   }
+
+  /// Get Restaurant
+  Stream<QuerySnapshot> getRestaurantListFromApi(String referencePath) {
+    print('in Database');
+    return _firestore.collection(referencePath).snapshots();
+  }
 }

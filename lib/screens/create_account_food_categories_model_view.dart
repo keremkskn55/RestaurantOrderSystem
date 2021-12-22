@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:restaurant_order_system/models/restaurant.dart';
 import 'package:restaurant_order_system/services/database.dart';
@@ -12,8 +14,7 @@ class CreateAccountFoodCategoriesModeView extends ChangeNotifier {
       required String restaurantName,
       required Map<String, int> places,
       required List<String> placesList,
-      required List<Map<String, List<Map<String, double>>>>
-          categoryNameList}) async {
+      required List<String> categoryNameList}) async {
     /// Form alanındaki verileri ile önce bir book objesi oluşturulması
     Restaurant newRestaurant = Restaurant(
       email: email,

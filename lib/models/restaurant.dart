@@ -4,7 +4,7 @@ class Restaurant {
   String restaurantName;
   Map<String, int> places;
   List<String> placesList;
-  List<Map<String, List<Map<String, double>>>> categories;
+  List<String> categories;
 
   Restaurant({
     required this.email,
@@ -26,14 +26,14 @@ class Restaurant {
     };
   }
 
-  factory Restaurant.fromMap(Map map) {
+  factory Restaurant.fromMap(Map<String, dynamic> map) {
     return Restaurant(
       email: map['email'],
       password: map['password'],
       restaurantName: map['restaurantName'],
-      categories: map['categories'],
-      places: map['places'],
-      placesList: map['placesList'],
+      places: Map<String, int>.from(map['places']),
+      categories: List<String>.from(map['categories']),
+      placesList: List<String>.from(map['placesList']),
     );
   }
 }
