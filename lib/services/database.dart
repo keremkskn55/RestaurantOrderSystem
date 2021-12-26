@@ -19,4 +19,16 @@ class Database {
     print('in Database');
     return _firestore.collection(referencePath).snapshots();
   }
+
+  /// Updating Document
+  Future<void> updateDocument(
+      String collectionPath, String documentPath, List orderListData) {
+    print('orderData $orderListData');
+    return _firestore
+        .collection(collectionPath)
+        .doc(documentPath)
+        .update({'orders': orderListData})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
 }

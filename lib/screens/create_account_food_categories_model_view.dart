@@ -23,6 +23,7 @@ class CreateAccountFoodCategoriesModeView extends ChangeNotifier {
       placesList: placesList,
       restaurantName: restaurantName,
       categories: categoryNameList,
+      orders: <String>[],
     );
 
     /// bu kitap bilgisini database servisi üzerinden Firestore'a yazacak

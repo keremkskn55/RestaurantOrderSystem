@@ -5,6 +5,7 @@ class Restaurant {
   Map<String, int> places;
   List<String> placesList;
   List<String> categories;
+  List<String> orders;
 
   Restaurant({
     required this.email,
@@ -13,6 +14,7 @@ class Restaurant {
     required this.categories,
     required this.places,
     required this.placesList,
+    required this.orders,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +25,7 @@ class Restaurant {
       'categories': categories,
       'places': places,
       'placesList': placesList,
+      'orders': orders,
     };
   }
 
@@ -34,6 +37,7 @@ class Restaurant {
       places: Map<String, int>.from(map['places']),
       categories: List<String>.from(map['categories']),
       placesList: List<String>.from(map['placesList']),
+      orders: List<String>.from(map['orders']),
     );
   }
 }
