@@ -65,15 +65,18 @@ class _HomeViewState extends State<HomeView> {
                     .map((category) =>
                         jsonDecode(category) as Map<String, dynamic>)
                     .toList();
-                print(foodCategory[0]['Drinks'][0]['Cola']);
+                // print(foodCategory[0]['Drinks'][0]['Cola']);
 
-                List<Order> orderList = currentRestaurant.orders
+                List<Order> realOrderList = currentRestaurant.orders
                     .map((order) => Order.fromMap(jsonDecode(order)))
                     .toList();
 
-                orderList.where((order) => !order.isFinished);
-                for (Order order in orderList) {
-                  print('${order.placeNum}Place ${order.tableNum}Table');
+                List<Order> orderList = [];
+
+                for (Order order in realOrderList) {
+                  if (order.isFinished) continue;
+                  orderList.add(order);
+                  print('${order.placeNum}Place ${order.tableNum}Table...');
                   print(order.currentOrders);
                 }
 
@@ -277,262 +280,14 @@ class _HomeViewState extends State<HomeView> {
                                     onTap: () {
                                       print(
                                           '$currentPlace ${index + 1}. Table');
-                                      showModalBottomSheet<void>(
-                                        context: context,
-                                        backgroundColor: Colors.transparent,
-                                        builder: (BuildContext context2) {
-                                          return Container(
-                                            height: size.height / 2,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  topRight: Radius.circular(24),
-                                                  topLeft: Radius.circular(24)),
-                                              gradient: LinearGradient(
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                  colors: [
-                                                    Color(0xFFC6C6C6),
-                                                    Color(0xFF656565),
-                                                    Color(0xFF000000)
-                                                        .withOpacity(0.7),
-                                                  ]),
-                                            ),
-                                            child: Center(
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      /// Table Name
-                                                      Container(
-                                                        padding:
-                                                            EdgeInsets.all(16),
-                                                        child: Text(
-                                                          '$currentPlace ${index + 1}. Table',
-                                                          style: TextStyle(
-                                                              fontSize: 20,
-                                                              color:
-                                                                  Colors.black),
-                                                        ),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Color(0xFFC4C4C4),
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    24),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    24),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.pop(
-                                                              context2);
-                                                        },
-                                                        child: Container(
-                                                          width: 48,
-                                                          height: 48,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0xFFC4C4C4),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .only(
-                                                              topRight: Radius
-                                                                  .circular(24),
-                                                              bottomLeft: Radius
-                                                                  .circular(24),
-                                                            ),
-                                                          ),
-                                                          child: Center(
-                                                            child: Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_down,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  currentOrder == null
-                                                      ? Spacer()
-                                                      : Expanded(
-                                                          child:
-                                                              ListView.builder(
-                                                                  itemCount:
-                                                                      currentOrder
-                                                                          .currentOrders
-                                                                          .length,
-                                                                  itemBuilder:
-                                                                      (context,
-                                                                          index) {
-                                                                    Map<String,
-                                                                            dynamic>
-                                                                        orderedFood =
-                                                                        jsonDecode(
-                                                                            currentOrder!.currentOrders[index]);
-                                                                    int numberOfOrderedFood =
-                                                                        orderedFood['food']
-                                                                            .length;
-                                                                    return Container(
-                                                                      margin: EdgeInsets
-                                                                          .symmetric(
-                                                                        horizontal:
-                                                                            8,
-                                                                        vertical:
-                                                                            4,
-                                                                      ),
-                                                                      height: 50.0 *
-                                                                          numberOfOrderedFood,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: orderedFood['isServed'][0]['isServed'] ==
-                                                                                -1
-                                                                            ? Colors.yellow
-                                                                            : Colors.green,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(16),
-                                                                      ),
-                                                                      child: ListView.builder(
-                                                                          physics: NeverScrollableScrollPhysics(),
-                                                                          itemCount: orderedFood['food'].length,
-                                                                          itemBuilder: (context, index2) {
-                                                                            String
-                                                                                foodName =
-                                                                                '';
-                                                                            num totalAmount =
-                                                                                0;
-                                                                            for (var realFoodName
-                                                                                in orderedFood['food'][index2].keys) {
-                                                                              if (realFoodName != 'amount') {
-                                                                                foodName = realFoodName;
-                                                                                totalAmount += (orderedFood['food'][index2][foodName] * orderedFood['food'][index2]['amount'])!;
-                                                                                print('total Amount: $totalAmount');
-                                                                              }
-                                                                            }
-                                                                            return SizedBox(
-                                                                              height: 50,
-                                                                              child: Row(
-                                                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                children: [
-                                                                                  SizedBox(
-                                                                                    width: 16,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    '${orderedFood['food'][index2]['amount'].round()}',
-                                                                                    style: TextStyle(
-                                                                                      color: Colors.black,
-                                                                                      fontSize: 20,
-                                                                                    ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    width: 16,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    '$foodName',
-                                                                                    style: TextStyle(
-                                                                                      color: Colors.black,
-                                                                                      fontSize: 20,
-                                                                                    ),
-                                                                                  ),
-                                                                                  Spacer(),
-                                                                                  Text(
-                                                                                    '$totalAmount \$',
-                                                                                    style: TextStyle(
-                                                                                      color: Colors.black,
-                                                                                      fontSize: 20,
-                                                                                    ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    width: 16,
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    );
-                                                                  }),
-                                                        ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 16.0),
-                                                    child: Divider(
-                                                      color: Colors.white,
-                                                      thickness: 2,
-                                                      height: 10,
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            AddingOrderView(
-                                                                              currentRestaurant: currentRestaurant,
-                                                                              foodCategory: foodCategory,
-                                                                              placeName: currentPlace,
-                                                                              tableNum: (index + 1),
-                                                                              ordersList: orderList,
-                                                                            )));
-                                                          },
-                                                          child: Container(
-                                                            margin:
-                                                                EdgeInsets.all(
-                                                                    16),
-                                                            height: 40,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Color(
-                                                                  0xFF00CE52),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          16),
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                currentOrder !=
-                                                                        null
-                                                                    ? 'Update Order'
-                                                                    : 'Give New Order',
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 20,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
+                                      buildShowModalBottomSheet(
+                                          context,
+                                          size,
+                                          index,
+                                          currentOrder,
+                                          currentRestaurant,
+                                          foodCategory,
+                                          orderList);
                                     },
                                     child: Container(
                                       margin: EdgeInsets.all(16),
@@ -568,6 +323,390 @@ class _HomeViewState extends State<HomeView> {
               }
             }
           }),
+    );
+  }
+
+  Future<void> buildShowModalBottomSheet(
+      BuildContext context,
+      Size size,
+      int index,
+      Order? currentOrder,
+      Restaurant currentRestaurant,
+      List<Map<String, dynamic>> foodCategory,
+      List<Order> orderList) {
+    return showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context2) {
+        return StatefulBuilder(builder: (context, setModalState) {
+          return Container(
+            height: size.height / 2,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(24), topLeft: Radius.circular(24)),
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFFC6C6C6),
+                    Color(0xFF656565),
+                    Color(0xFF000000).withOpacity(0.7),
+                  ]),
+            ),
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      /// Table Name
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          '$currentPlace ${index + 1}. Table',
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFC4C4C4),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(24),
+                            bottomRight: Radius.circular(24),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context2);
+                        },
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFC4C4C4),
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(24),
+                              bottomLeft: Radius.circular(24),
+                            ),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  currentOrder == null
+                      ? Spacer()
+                      : Expanded(
+                          child: ListView.builder(
+                              itemCount: currentOrder.currentOrders.length,
+                              itemBuilder: (context, index) {
+                                List<Map<String, dynamic>> orderedFoodList =
+                                    currentOrder.currentOrders
+                                        .map((e) => jsonDecode(e)
+                                            as Map<String, dynamic>)
+                                        .toList();
+                                // Map<String, dynamic> orderedFood = jsonDecode(
+                                //     currentOrder.currentOrders[index]);
+                                int numberOfOrderedFood =
+                                    orderedFoodList[index]['food'].length;
+                                return Container(
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  height: 50.0 * numberOfOrderedFood,
+                                  decoration: BoxDecoration(
+                                    color: orderedFoodList[index]['isServed'][0]
+                                                ['isServed'] ==
+                                            -1
+                                        ? Colors.yellow
+                                        : Colors.green,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount:
+                                          orderedFoodList[index]['food'].length,
+                                      itemBuilder: (context, index2) {
+                                        String foodName = '';
+                                        num totalAmount = 0;
+                                        for (var realFoodName
+                                            in orderedFoodList[index]['food']
+                                                    [index2]
+                                                .keys) {
+                                          if (realFoodName != 'amount') {
+                                            foodName = realFoodName;
+                                            totalAmount +=
+                                                (orderedFoodList[index]['food']
+                                                        [index2][foodName] *
+                                                    orderedFoodList[index]
+                                                            ['food'][index2]
+                                                        ['amount'])!;
+                                            print('total Amount: $totalAmount');
+                                          }
+                                        }
+                                        return SizedBox(
+                                          height: 50,
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(
+                                                '${orderedFoodList[index]['food'][index2]['amount'].round()}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(
+                                                '$foodName',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              Text(
+                                                '$totalAmount \$',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 16,
+                                              ),
+                                              orderedFoodList[index]['isServed']
+                                                              [0]['isServed'] ==
+                                                          -1 &&
+                                                      index2 == 0
+                                                  ? GestureDetector(
+                                                      onTap: () async {
+                                                        List<String>
+                                                            allOrdersInRestStrMap =
+                                                            [];
+                                                        setModalState(() {
+                                                          orderedFoodList[index]
+                                                                  [
+                                                                  'isServed'][0]
+                                                              ['isServed'] = 1;
+                                                          List<String>
+                                                              orderedFoodListString =
+                                                              orderedFoodList
+                                                                  .map((e) =>
+                                                                      jsonEncode(
+                                                                          e))
+                                                                  .toList();
+                                                          currentOrder
+                                                                  .currentOrders =
+                                                              orderedFoodListString;
+                                                          List<
+                                                                  Map<String,
+                                                                      dynamic>>
+                                                              allOrdersInRestFromMap =
+                                                              currentRestaurant
+                                                                  .orders
+                                                                  .map((e) => jsonDecode(
+                                                                          e)
+                                                                      as Map<
+                                                                          String,
+                                                                          dynamic>)
+                                                                  .toList();
+                                                          print(
+                                                              allOrdersInRestFromMap);
+                                                          Map<String, dynamic>
+                                                              currentOrderOnMap =
+                                                              currentOrder
+                                                                  .toMap();
+                                                          for (var orderInAllOrder
+                                                              in allOrdersInRestFromMap) {
+                                                            if (!orderInAllOrder[
+                                                                    'isFinished'] &&
+                                                                orderInAllOrder[
+                                                                        'placeNum'] ==
+                                                                    currentOrder
+                                                                        .placeNum &&
+                                                                orderInAllOrder[
+                                                                        'tableNum'] ==
+                                                                    currentOrder
+                                                                        .tableNum) {
+                                                              allOrdersInRestFromMap
+                                                                  .remove(
+                                                                      orderInAllOrder);
+                                                              allOrdersInRestFromMap
+                                                                  .add(
+                                                                      currentOrderOnMap);
+                                                              break;
+                                                            }
+                                                          }
+                                                          allOrdersInRestStrMap =
+                                                              allOrdersInRestFromMap
+                                                                  .map((e) =>
+                                                                      jsonEncode(
+                                                                          e))
+                                                                  .toList();
+                                                        });
+                                                        await HomeModelView()
+                                                            .updateOrder(
+                                                                currentRestaurant
+                                                                    .email,
+                                                                allOrdersInRestStrMap);
+                                                        setModalState(() {});
+                                                        print('Change Of');
+                                                      },
+                                                      child: Container(
+                                                        width: 50,
+                                                        height: 50,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.green,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(16),
+                                                        ),
+                                                        child: Center(
+                                                          child: Icon(
+                                                            Icons.done,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container()
+                                            ],
+                                          ),
+                                        );
+                                      }),
+                                );
+                              }),
+                        ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Divider(
+                      color: Colors.white,
+                      thickness: 2,
+                      height: 10,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      currentOrder != null
+                          ? Expanded(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  print('finish');
+                                  List<String> allOrdersInRestStrMap = [];
+                                  List<Map<String, dynamic>>
+                                      allOrdersInRestFromMap = currentRestaurant
+                                          .orders
+                                          .map((e) => jsonDecode(e)
+                                              as Map<String, dynamic>)
+                                          .toList();
+                                  print(allOrdersInRestFromMap);
+                                  currentOrder.isFinished = true;
+                                  Map<String, dynamic> currentOrderOnMap =
+                                      currentOrder.toMap();
+                                  for (var orderInAllOrder
+                                      in allOrdersInRestFromMap) {
+                                    if (!orderInAllOrder['isFinished'] &&
+                                        orderInAllOrder['placeNum'] ==
+                                            currentOrder.placeNum &&
+                                        orderInAllOrder['tableNum'] ==
+                                            currentOrder.tableNum) {
+                                      allOrdersInRestFromMap
+                                          .remove(orderInAllOrder);
+                                      allOrdersInRestFromMap
+                                          .add(currentOrderOnMap);
+                                      break;
+                                    }
+                                  }
+                                  print(currentOrderOnMap);
+                                  allOrdersInRestStrMap = allOrdersInRestFromMap
+                                      .map((e) => jsonEncode(e))
+                                      .toList();
+                                  await HomeModelView().updateOrder(
+                                      currentRestaurant.email,
+                                      allOrdersInRestStrMap);
+                                  setModalState(() {});
+                                  print('Change Of Finish');
+                                  print(currentRestaurant.orders);
+                                  Navigator.pop(context2);
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(16),
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF00CE52),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Finish',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddingOrderView(
+                                          currentRestaurant: currentRestaurant,
+                                          foodCategory: foodCategory,
+                                          placeName: currentPlace,
+                                          tableNum: (index + 1),
+                                          ordersList: orderList,
+                                        ))).then(
+                                (value) => setModalState(() {}));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(16),
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF00CE52),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Center(
+                              child: Text(
+                                currentOrder != null
+                                    ? 'Update Order'
+                                    : 'Give New Order',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+      },
     );
   }
 }

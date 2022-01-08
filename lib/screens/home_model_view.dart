@@ -13,6 +13,10 @@ class HomeModelView extends ChangeNotifier {
     return _database.getRestaurantListFromApi(collectionPath);
   }
 
+  Future<void> updateOrder(String email, List orderInString) {
+    return _database.updateDocument('emails', email, orderInString);
+  }
+
   // Stream<List<Restaurant>> getRestaurantList() {
   //
   //   /// stream<QuerySnapshot> --> Stream<List<DocumentSnapshot>>
