@@ -7,7 +7,6 @@ With this app, waitress can give and save order in this application. In this dyn
 - The app does not focus just a restaurant. So, restaurant table, menus, places are dynamic.
 - If a table is empty, its color is grey; if a table gives an order but still the order are not served, its color is yellow; if a table if a table gives an order and the order are served, its color is green.
 - Also you can see orders and tables in main menu effectively.
-- In this stage, all fonction works instead of orders page button, 
 
 # ---
 ![restaurantOrrder](https://user-images.githubusercontent.com/82051237/148684413-8623f4a9-1fc4-4eb5-b6a5-f6ce667d29c5.gif)
