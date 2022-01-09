@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_order_system/models/order.dart';
 import 'package:restaurant_order_system/models/restaurant.dart';
@@ -410,7 +411,10 @@ class _AddingOrderViewState extends State<AddingOrderView> {
                     String currentOrderBeforeSend =
                         jsonEncode(currentOrderList);
                     Order newOrder = Order(
-                      date: DateTime.now().toIso8601String(),
+                      // date: DateTime.now().toIso8601String(),
+                      date: DateFormat('y/MM/dd')
+                          .add_jms()
+                          .format(DateTime.now()),
                       note: '',
                       currentOrders: [currentOrderBeforeSend],
                       isFinished: false,

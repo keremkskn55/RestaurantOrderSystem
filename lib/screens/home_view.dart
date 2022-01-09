@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_order_system/models/order.dart';
 import 'package:restaurant_order_system/models/restaurant.dart';
 import 'package:restaurant_order_system/screens/adding_order_view.dart';
+import 'package:restaurant_order_system/screens/orders_view.dart';
 import 'package:restaurant_order_system/services/auth.dart';
 
 import 'home_model_view.dart';
@@ -65,7 +66,6 @@ class _HomeViewState extends State<HomeView> {
                     .map((category) =>
                         jsonDecode(category) as Map<String, dynamic>)
                     .toList();
-                // print(foodCategory[0]['Drinks'][0]['Cola']);
 
                 List<Order> realOrderList = currentRestaurant.orders
                     .map((order) => Order.fromMap(jsonDecode(order)))
@@ -147,6 +147,13 @@ class _HomeViewState extends State<HomeView> {
 
                                     /// Orders
                                     GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OrdersView()));
+                                      },
                                       child: Container(
                                         width: 100,
                                         height: 40,
@@ -583,7 +590,10 @@ class _HomeViewState extends State<HomeView> {
                                                         ),
                                                       ),
                                                     )
-                                                  : Container()
+                                                  : Container(
+                                                      width: 50,
+                                                      height: 50,
+                                                    )
                                             ],
                                           ),
                                         );
@@ -665,8 +675,8 @@ class _HomeViewState extends State<HomeView> {
                           : Container(),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AddingOrderView(
@@ -677,6 +687,7 @@ class _HomeViewState extends State<HomeView> {
                                           ordersList: orderList,
                                         ))).then(
                                 (value) => setModalState(() {}));
+                            // Navigator.pop(context2);
                           },
                           child: Container(
                             margin: EdgeInsets.all(16),
